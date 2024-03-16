@@ -1,5 +1,5 @@
-import { hash } from "bcrypt";
 import pool from "../db/database.js";
+import tokenService from "../services/token.service.js";
 import userService from "../services/user.service.js";
 import { validationResult } from "express-validator";
 
@@ -12,18 +12,10 @@ class UserController {
             }
             const {email, login, password} = req.body;
             const id = Date.now();
-            const check = await userService.userDataCheck(email, login); //Проверяем уникальность email и login
-            const hashPassword = await userService.passwordEncrypt(password); //Шифруем пароль
-
-            if (!check){    
-                const newUser = await pool.query(`INSERT INTO "User" (id, email, login, password) values($1, $2, $3, $4) RETURNING *`,
-                [id, email, login, hashPassword]);
-                return res.json(newUser.rows[0]);
-            }
-            return res.status(400).json(check);
+            return res.json(await userService.Registration(id, email, login, password));
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Registration erorr"});
+            return res.status(400).json({message: "Some registration erorr"});
         }
     }
     async login(req, res){
@@ -37,22 +29,32 @@ class UserController {
             const {email, password} = req.body;
             const hashPassword = (await pool.query(`SELECT password from "User" WHERE email=$1`, [email])).rows[0]; //Получаем зашифрованный пароль
 
-            if (hashPassword === undefined){ //Если hasPassword === undefined, то это значит, что пользователя с таким e-mail нет в бд.
+            if (hashPassword === undefined){ //Если hashPassword === undefined, то это значит, что пользователя с таким e-mail нет в бд.
                 return res.status(400).json({message: "Incorrect e-mail.", result: false})
             }
 
             const logResult = await userService.login(password, hashPassword.password);
-            if (!logResult){
+            if (!logResult.result){
                 return res.status(400).json(logResult);
             }
 
             return res.json(logResult);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Login error"});
+            return res.status(400).json({message: "Some login error"});
         }
 
     }
+    async logout(req, res){
+
+    }
+    async refresh(req, res){
+
+    }
+    async activate(req, res){
+
+    }
+
     async getOneUser(req, res){
         try{
             const id = req.params.id;
@@ -60,7 +62,7 @@ class UserController {
             return res.json(user.rows[0]);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Get erorr"});
+            return res.status(400).json({message: "Some get erorr"});
         }
     }
     
@@ -70,7 +72,7 @@ class UserController {
             return res.json(users.rows);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Get erorr"});
+            return res.status(400).json({message: "Some get erorr"});
         }
     }
     
@@ -80,15 +82,15 @@ class UserController {
             const {email, login, password} = req.body;
             const hashPassword = userService.passwordEncrypt(password);
             const check = await userService.userDataCheck(email, login);
-            
-            if (!check){
+        
+            if (check.result){
                 const user = await pool.query(`UPDATE "User" set email=$1, login=$2, password=$3 WHERE id=$4 RETURNING *`, 
                 [email, login, hashPassword, id]);
                 return res.json(user.rows[0]);
             }
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Update erorr"});
+            return res.status(400).json({message: "Some update erorr"});
         }
     }
     
@@ -99,7 +101,7 @@ class UserController {
             return res.json(user.rows[0]);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Delete erorr"});
+            return res.status(400).json({message: "Some delete erorr"});
         }
     }
 }

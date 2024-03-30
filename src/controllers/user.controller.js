@@ -12,57 +12,62 @@ class UserController {
             }
             const {email, login, password} = req.body;
             const id = Date.now();
-            return res.json(await userService.Registration(id, email, login, password));
+            const userData = await userService.Registration(id, email, login, password);
+            console.log(userData);
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+            return res.json(userData);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Some registration erorr"});
+            return res.status(400).json({message: "Some registration erorr", result: false});
         }
     }
     async login(req, res){
         try{
-            
             const errors = validationResult(req);
             if (!errors.isEmpty()){
                 return res.status(400).json(errors);
             }
-
             const {email, password} = req.body;
-            const hashPassword = (await pool.query(`SELECT password from "User" WHERE email=$1`, [email])).rows[0]; //Получаем зашифрованный пароль
+            const userData = await userService.login(email, password);
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+            return res.json(userData);
 
-            if (hashPassword === undefined){ //Если hashPassword === undefined, то это значит, что пользователя с таким e-mail нет в бд.
-                return res.status(400).json({message: "Incorrect e-mail.", result: false})
-            }
-
-            const logResult = await userService.login(password, hashPassword.password);
-            if (!logResult.result){
-                return res.status(400).json(logResult);
-            }
-
-            return res.json(logResult);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Some login error"});
+            return res.status(400).json({message: "Some login error", result: false});
         }
 
     }
     async logout(req, res){
-
+        try{
+            const {refreshToken} = req.cookies;
+            const token = await userService.logout(refreshToken);
+            res.clearCookie('refreshToken');
+            return res.json(token);
+        }catch(e){
+            console.error(e);
+            return res.status(400).json({message: "Some logout error", result: false});
+        }
     }
     async refresh(req, res){
-
+        try{
+            const refreshToken = req.cookies.refreshToken;
+            const userData = await userService.refresh(refreshToken);
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+            return res.json(userData);
+        }catch(e){
+            console.error(e);
+            return res.status(400).json({message: "Some refresh error", result: false});
+        }
     }
-    async activate(req, res){
-
-    }
-
     async getOneUser(req, res){
         try{
             const id = req.params.id;
-            const user = await pool.query(`SELECT * FROM "User" WHERE id=$1`, [id]);
-            return res.json(user.rows[0]);
+            const userData = await userService.getOneUser(id);
+            return res.json(userData);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Some get erorr"});
+            return res.status(400).json({message: "Some get erorr", result: false});
         }
     }
     
@@ -72,36 +77,30 @@ class UserController {
             return res.json(users.rows);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Some get erorr"});
+            return res.status(400).json({message: "Some get erorr", result: false});
         }
     }
     
     async updateUser(req, res){
         try{
             const id = req.params.id;
-            const {email, login, password} = req.body;
-            const hashPassword = userService.passwordEncrypt(password);
-            const check = await userService.userDataCheck(email, login);
-        
-            if (check.result){
-                const user = await pool.query(`UPDATE "User" set email=$1, login=$2, password=$3 WHERE id=$4 RETURNING *`, 
-                [email, login, hashPassword, id]);
-                return res.json(user.rows[0]);
-            }
+            const {login, password, skin} = req.body;
+            const userData = await userService.updateUser(id, login, password, skin);
+            return res.json(userData);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Some update erorr"});
+            return res.status(400).json({message: "Some update erorr", result: false});
         }
     }
     
     async deleteUser(req, res){
         try{
             const id = req.params.id;
-            const user = await pool.query(`DELETE FROM "User" WHERE id=$1`, [id]);
-            return res.json(user.rows[0]);
+            const userData = await userService.deleteUser(id);
+            return res.json(userData);
         }catch(e){
             console.error(e);
-            return res.status(400).json({message: "Some delete erorr"});
+            return res.status(400).json({message: "Some delete erorr", result: false});
         }
     }
 }

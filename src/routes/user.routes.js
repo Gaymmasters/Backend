@@ -11,6 +11,8 @@ user_router.post('/registration',
 user_router.post('/login',
     body('email').isEmail(),
     userController.login);
+user_router.post('/logout', userController.logout);
+user_router.get('/refresh', userController.refresh);
 user_router.get('/user', userController.getAllUsers);
 user_router.get('/user/:id', userController.getOneUser);
 user_router.put('/user/:id', userController.updateUser);

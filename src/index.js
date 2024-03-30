@@ -1,5 +1,7 @@
 import express from 'express';
 import user_router from './routes/user.routes.js';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import 'dotenv/config'; //Использование переменных из .env
 
 
@@ -7,6 +9,11 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}));
 app.use('/api', user_router);
 
 const start = async () => {

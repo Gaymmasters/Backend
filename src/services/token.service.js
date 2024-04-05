@@ -12,16 +12,16 @@ class TokenService {
         }
     }
     async saveToken(userId, refreshToken){
-        const tokenData = (await pool.query(`SELECT "RefreshToken" FROM "UserToken" WHERE "UserId"=$1`, [userId])).rows[0];
+        const tokenData = (await pool.query(`SELECT "refreshToken" FROM "UserToken" WHERE "userId"=$1`, [userId])).rows[0];
         if (tokenData){
-            return await pool.query(`UPDATE "UserToken" SET "RefreshToken"=$1 WHERE "UserId"=$2`, [refreshToken, userId]);
+            return await pool.query(`UPDATE "UserToken" SET "refreshToken"=$1 WHERE "userId"=$2`, [refreshToken, userId]);
         }
         const token = await pool.query(`INSERT INTO "UserToken" values($1, $2)`, [userId, refreshToken]);
         return token.rows[0];
     }
     async removeToken(refreshToken){
         try{
-        const tokenData = await pool.query(`DELETE FROM "UserToken" WHERE "RefreshToken"=$1`, [refreshToken]);
+        const tokenData = await pool.query(`DELETE FROM "UserToken" WHERE "refreshToken"=$1`, [refreshToken]);
         return {...tokenData, message: "Success", result: true};
         }catch(e){
             console.log(e);
@@ -45,7 +45,7 @@ class TokenService {
         }
     }
     async findToken(refreshToken){
-        const tokenData = (await pool.query(`SELECT "RefreshToken" FROM "UserToken" WHERE "RefreshToken"=$1`, [refreshToken])).rows[0];
+        const tokenData = (await pool.query(`SELECT "refreshToken" FROM "UserToken" WHERE "refreshToken"=$1`, [refreshToken])).rows[0];
         return tokenData;
     }
 }

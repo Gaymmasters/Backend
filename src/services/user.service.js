@@ -75,14 +75,13 @@ class UserService {
         const checkEmail = (await pool.query(`SELECT email FROM "User" WHERE email=$1`, [email])).rows[0]; // Если пользователя с такой почтой нет, то вернет undefined
 
         const userData = (await pool.query(`SELECT * from "User" WHERE email=$1`, [email])).rows[0];
-        const user = new User(userData.id, userData.email, userData.login, userData.password);
-
+        
         if (!checkEmail){ //проверяем уникальность почты
            console.error(`User with e-mail: '${email}' doesn't exist.`);
-           return {...user, message: `User with e-mail: '${email}' doesn't exist.`, result: false};
+           return {message: `User with e-mail: '${email}' doesn't exist.`, result: false};
         }
         const IsPasswordValid = await bcrypt.compare(password, userData.password); // Проверяем пароль
-
+        const user = new User(userData.id, userData.email, userData.login, userData.password);
         if (!IsPasswordValid)
             return {...user, message: `Invalid password`, result: false};
 

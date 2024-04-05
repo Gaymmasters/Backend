@@ -3,13 +3,17 @@ services:
   serv:
     build: ./src
     ports:
-      - 3000:3000
+      - 5000:5000
   db:
     image: postgres:15.6
     restart: always
     shm_size: 128mb
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
+      POSTGRES_DB: tictacpostgres
+    ports:
+      - 5400:5432
 
   adminer:
     image: adminer

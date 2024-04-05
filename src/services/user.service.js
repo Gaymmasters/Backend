@@ -97,7 +97,7 @@ class UserService {
     }
     
     async refresh(refreshToken){
-        const userID = (await pool.query(`SELECT "UserId" FROM "UserToken" WHERE "RefreshToken"=$1`, [refreshToken])).rows[0].UserId;
+        const userID = (await pool.query(`SELECT "userId" FROM "UserToken" WHERE "refreshToken"=$1`, [refreshToken])).rows[0].userId;
         const userData = (await pool.query(`SELECT * from "User" WHERE Id=$1`, [userID])).rows[0];
         const user = new User(userData.id, userData.email, userData.login, userData.password);
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import user_router from './routes/user.routes.js';
+import router from './routes/routes.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config'; //Использование переменных из .env
@@ -14,7 +14,7 @@ app.use(cors({
     credentials: true,
     origin: process.env.CLIENT_URL
 }));
-app.use('/api', user_router);
+app.use('/api', router);
 
 const start = async () => {
     try{

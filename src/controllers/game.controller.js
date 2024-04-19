@@ -37,8 +37,8 @@ class GameController {
     }
     async joinGame(req, res){
         try{
-            const {name, password, isPrivate, player2Id} = req.body;
-            const gameData = await gameService.joinGame(player2Id, name, password, isPrivate);
+            const {name, password, player2Id} = req.body;
+            const gameData = await gameService.joinGame(player2Id, name, password);
             console.log(gameData);
             return res.json(gameData);
         }catch(e){

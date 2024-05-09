@@ -17,7 +17,8 @@ router.post('/logout', userController.logout);
 router.get('/refresh', userController.refresh);
 router.get('/user', userController.getAllUsers);
 router.get('/user/:id', userController.getOneUser);
-router.put('/user/:id', userController.updateUser);
+router.put('/user/login/:id', userController.updateLogin);
+router.put('/user/skin/:id', userController.updateSkin);
 router.delete('/user/:id', userController.deleteUser);
 
 //game routes

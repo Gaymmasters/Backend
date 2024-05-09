@@ -13,7 +13,7 @@ class GameService {
     }
     async createGame(id, name, isPrivate, password, player1Id){
         const checkName = (await pool.query(`SELECT name FROM "Game" WHERE "name"=$1`, [name])).rows[0];
-        const game = new Game({Id: id, name: name, isPrivate: isPrivate, password: password, player1Id: player1Id, moves: [], winFlag: 0});
+        const game = new Game({id: id, name: name, isPrivate: isPrivate, password: password, player1Id: player1Id, moves: [], winFlag: 0});
         if (checkName){
             console.log(`Game with name: '${name}' already exists.`);
             return {...game, message: `Game with name: '${name}' already exists.`, result: false}

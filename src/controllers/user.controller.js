@@ -84,11 +84,23 @@ class UserController {
         }
     }
     
-    async updateUser(req, res){
+    async updateLogin(req, res){
         try{
             const id = req.params.id;
-            const {login, password, skin} = req.body;
-            const userData = await userService.updateUser(id, login, password, skin);
+            const {login} = req.body;
+            const userData = await userService.updateLogin(id, login);
+            console.log(userData);
+            return res.json(userData);
+        }catch(e){
+            console.error(e);
+            return res.status(400).json({message: "Some update erorr", result: false});
+        }
+    }
+    async updateSkin(req, res){
+        try{
+            const id = req.params.id;
+            const {skin} = req.body;
+            const userData = await userService.updateSkin(id, skin);
             console.log(userData);
             return res.json(userData);
         }catch(e){

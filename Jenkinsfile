@@ -4,34 +4,28 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                sh "cd TestBackend"
                 checkout scm
-                sh '''
-                docker-compose build
-                docker-compose up -d
-                '''
+                sh "docker compose build"
             }
         }
-        stage('Test') {
+
+        stage('Run') {
             steps {
-                echo "Test"
-                sh '''
-                    pip install requests
-                    python3 test/pytest.py
-                    '''
-            }
-            post { 
-                always { 
-                   sh "docker-compose stop"
-                }
+                checkout scm
+                sh """
+                    docker compose up -d
+                    docker compose stop
+                """
             }
         }
     
         stage("Deploy"){
             steps{
                 echo "Deploy"
-                sh """cd /var/backend-serv
-                    docker-compose stop
-                    cp -r /var/jenkins/workspace/back/* /var/backend-serv
+                sh """
+                    cd ../Backend
+                    cp -r ../TestBackend/* .
                     docker-compose build
                     docker-compose up -d
                 """

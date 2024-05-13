@@ -24,8 +24,8 @@ pipeline {
                 sh """
                     cp -r ./* /srv/TicTacToe/Backend
                     cd /srv/TicTacToe/Backend
-                    docker-compose build
-                    docker-compose up -d
+                    docker compose build
+                    docker compose up -d
                 """
             }    
         }

@@ -22,6 +22,6 @@ services:
       - ${ADMIN_PORT}:8080
       
   front:
-    build: ../Frontend
+    build: ${FRONT_PATH}
     ports:
       - ${FRONT_PORT}:3000

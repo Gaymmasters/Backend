@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "cd /srv/TicTacToe/TestBackend"
                 checkout scm
                 sh "docker compose build"
             }
@@ -23,8 +22,8 @@ pipeline {
             steps{
                 echo "Deploy"
                 sh """
-                    cd ../Backend
-                    cp -r ../TestBackend/* .
+                    cp -r ./* /srv/TicTacToe/Backend
+                    cd /srv/TicTacToe/Backend
                     docker-compose build
                     docker-compose up -d
                 """

@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "cd TestBackend"
+                sh "cd /srv/TicTacToe/TestBackend"
                 checkout scm
                 sh "docker compose build"
             }
@@ -12,7 +12,6 @@ pipeline {
 
         stage('Run') {
             steps {
-                checkout scm
                 sh """
                     docker compose up -d
                     docker compose stop

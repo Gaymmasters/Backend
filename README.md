@@ -1,7 +1,4 @@
 # API
-
-=
-
 ## Start
 > [!NOTE]
 > Для того, чтобы запусчить сервер нужно перейти в папку src
@@ -18,7 +15,7 @@
 
 #### UserRoutes
 (Пример пользователя)
-    \```javascript
+
     User = {
         id: 12345,
         email: "test@gmail.com",
@@ -26,7 +23,6 @@
         password: "1111",
         skin: 0
     }
-    \```
     
 * Регистрирование пользователя(Необходимые данные: email, login, password)
     post --> api/registration
@@ -69,7 +65,7 @@
 ---
 #### GameRoutes
 (Пример игры)
-    \```javascript
+
     Game = {
         id: 12345,
         player1Id: 111111,
@@ -81,7 +77,6 @@
         isPrivate: true,
         isBot: false
     }
-    \```
 
 * Получение списка игр
     get --> api/game

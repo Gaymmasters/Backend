@@ -1,5 +1,4 @@
 import pool from "../db/database.js";
-import tokenService from "../services/token.service.js";
 import userService from "../services/user.service.js";
 import { validationResult } from "express-validator";
 
@@ -29,6 +28,7 @@ class UserController {
             }
             const {email, password} = req.body;
             const userData = await userService.login(email, password);
+            console.log(userData);
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
             return res.json(userData);
 
@@ -53,6 +53,7 @@ class UserController {
         try{
             const refreshToken = req.cookies.refreshToken;
             const userData = await userService.refresh(refreshToken);
+            console.log(userData);
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
             return res.json(userData);
         }catch(e){
@@ -64,6 +65,7 @@ class UserController {
         try{
             const id = req.params.id;
             const userData = await userService.getOneUser(id);
+            console.log(userData);
             return res.json(userData);
         }catch(e){
             console.error(e);
@@ -74,6 +76,7 @@ class UserController {
     async getAllUsers(req, res){
         try{
             const users = await pool.query(`SELECT * FROM "User"`);
+            console.log(users.rows);
             return res.json(users.rows);
         }catch(e){
             console.error(e);
@@ -81,11 +84,24 @@ class UserController {
         }
     }
     
-    async updateUser(req, res){
+    async updateLogin(req, res){
         try{
             const id = req.params.id;
-            const {login, password, skin} = req.body;
-            const userData = await userService.updateUser(id, login, password, skin);
+            const {login} = req.body;
+            const userData = await userService.updateLogin(id, login);
+            console.log(userData);
+            return res.json(userData);
+        }catch(e){
+            console.error(e);
+            return res.status(400).json({message: "Some update erorr", result: false});
+        }
+    }
+    async updateSkin(req, res){
+        try{
+            const id = req.params.id;
+            const {skin} = req.body;
+            const userData = await userService.updateSkin(id, skin);
+            console.log(userData);
             return res.json(userData);
         }catch(e){
             console.error(e);
@@ -97,6 +113,7 @@ class UserController {
         try{
             const id = req.params.id;
             const userData = await userService.deleteUser(id);
+            console.log(userData);
             return res.json(userData);
         }catch(e){
             console.error(e);

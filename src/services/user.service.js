@@ -45,19 +45,29 @@ class UserService {
         return {...user, message: "User has been deleted", result: true};
     }
 
-    async updateUser(id, login, password, skin){
+    async updateLogin(id, login){
         const userData = (await pool.query(`SELECT * from "User" WHERE Id=$1`, [id])).rows[0];
-
         if (!userData) {
+            console.log({message: "Incorrect id", result: false});
             return {message: "Incorrect id", result: false};
         }
-        const hashPassword = await this.passwordEncrypt(password);
+        const user = new User(userData.id, userData.email, login, userData.password, +userData.skin);
 
-        const user = new User(userData.id, userData.email, login, hashPassword, skin);
+        await pool.query(`UPDATE "User" SET "login"=$1 WHERE id=$2`, [login, id]);
 
-        await pool.query(`UPDATE "User" SET "login"=$1, "password"=$2, "skin"=$3 WHERE Id=$4`, [login, hashPassword, skin, id]);
+        return {...user, message: "User's login has been updated", result: true};
+    }
+    async updateSkin(id, skin){
+        const userData = (await pool.query(`SELECT * from "User" WHERE Id=$1`, [id])).rows[0];
+        if (!userData) {
+            console.log({message: "Incorrect id", result: false});
+            return {message: "Incorrect id", result: false};
+        }
+        const user = new User(userData.id, userData.email, userData.login, userData.password, skin);
 
-        return {...user, message: "User has been updated", result: true};
+        await pool.query(`UPDATE "User" SET "skin"=$1 WHERE id=$2`, [skin, id]);
+
+        return {...user, message: "User's skin has been updated", result: true};
     }
 
     async getOneUser(id){

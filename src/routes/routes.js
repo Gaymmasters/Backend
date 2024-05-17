@@ -30,6 +30,7 @@ router.delete('/game/:id', gameController.deleteGame);
 router.put('/join', gameController.joinGame);
 router.get('/moves/:id', gameController.getMoves);
 router.post('/makemove', gameController.makeMove);
+router.post('/botmove', gameController.botMove);
 router.put('/flagwinner', gameController.flagWinner);
 
 export default router;

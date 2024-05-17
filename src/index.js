@@ -3,7 +3,6 @@ import router from './routes/routes.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import https from 'https';
-import path from 'path';
 import fs from 'fs';
 import 'dotenv/config'; //Использование переменных из .env
 

@@ -100,5 +100,16 @@ class GameController {
             return res.status(400).json({message: "Some flag winner error", result: false});
         }
     }
+    async botMove(req, res){
+        try{
+            const {id, move} = req.body;
+            const userData = await gameService.botMove(id, move);
+           // console.log(userData);
+            return res.json(userData);
+        }catch(e){
+            console.error(e);
+            return res.status(400).json({message: "Some bot movement error", result: false})
+        }
+    }
 }
 export default new GameController();

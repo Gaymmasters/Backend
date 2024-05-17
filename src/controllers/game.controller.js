@@ -12,10 +12,31 @@ class GameController {
             return res.status(400).json({message: "Some get error", result: false})
         }
     }
+    async getActiveGame(req, res){
+        try{
+            const games = await pool.query(`SELECT * FROM "Game" WHERE "player2Id" IS NULL`);
+            console.log(games.rows);
+            return res.json(games.rows)
+        }catch(e){
+            console.log(e);
+            return res.status(400).json({message: "Some get error", result: false})
+        }
+    }
     async getOneGame(req, res){
         try{
             const id = req.params.id;
             const gameData = await gameService.getOneGame(id);
+            console.log(gameData);
+            return res.json(gameData)
+        }catch(e){
+            console.error(e);
+            return res.status(400).json({message: "Some get error", result: false})
+        }
+    }
+    async deleteGame(req, res){
+        try{
+            const id = req.params.id;
+            const gameData = await gameService.deleteGame(id);
             console.log(gameData);
             return res.json(gameData)
         }catch(e){

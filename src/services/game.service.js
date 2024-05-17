@@ -11,6 +11,17 @@ class GameService {
         
         return {...game, message: "Success", result: true};
     }
+    async deleteGame(id){
+        const gameData = (await pool.query(`SELECT * from "Game" WHERE "id"=$1`, [id])).rows[0];
+        if (!gameData){
+            return {message: "Incorrect id", result: false};
+        }
+        const game = new Game(gameData)
+
+        await pool.query(`DELETE FROM "Game" WHERE "id"=$1`, [id]);
+
+        return {...game, message: "Game has been successfully deleted", result: true};
+    }
     async createGame(id, name, isPrivate, password, player1Id){
         const checkName = (await pool.query(`SELECT name FROM "Game" WHERE "name"=$1`, [name])).rows[0];
         const game = new Game({id: id, name: name, isPrivate: isPrivate, password: password, player1Id: player1Id, moves: [], winFlag: 0});

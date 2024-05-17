@@ -2,13 +2,13 @@
 ## Start
 > [!NOTE]
 > Для того, чтобы запусчить сервер нужно перейти в папку src \
->   `cd src` \
+    `cd src` \
 > Затем установить необходимые зависимости \
->   `npm i` \
+    `npm i` \
 > Теперь можно запустить сервер в обычном режиме \
->   `npm start` \
+    `npm start` \
 > Или в режиме разработки \
->   `npm run dev` \
+    `npm run dev`
 
 ---
 ### Routes
@@ -26,35 +26,35 @@
     
 * Регистрирование пользователя(Необходимые данные: email, login, password) \
     `post --> api/registration` \
-    Возвращает {...User, message: "", result: true/false, refreshToken: "", accessToken: ""} \
+    Возвращает {...User, message: "", result: true/false, refreshToken: "", accessToken: ""} 
     
 * Логин пользователя(Необходимые данные: email, password) \
     `post --> api/login` \
-    Возвращает {...User, message: "", result: true/false, refreshToken: "", accessToken: ""} \
+    Возвращает {...User, message: "", result: true/false, refreshToken: "", accessToken: ""} 
 
 * Логаут пользователя \
     `post --> api/logout` \
-    Возвращает {message: "", result: true/false} \
+    Возвращает {message: "", result: true/false} 
 
 * Рефреш токена пользователя (Требуется чтобы refreshToken был сохранен в Cookie) \
     `get --> api/refresh` \
-    Возвращает {...User, message: "", result: true/false, refreshToken: "", accessToken: ""} \
+    Возвращает {...User, message: "", result: true/false, refreshToken: "", accessToken: ""} 
 
 * Получение данных всех пользователей \
     `get --> api/user` \
-    Возвращает Array[{}, {}, ] \
+    Возвращает Array[{}, {}, ] 
     
 * Получение данных конкретного пользователя по id(api/user/14234) \
     `get --> api/user/:id` \
-    Возвращает {...User, message: "", result=true/false} \
+    Возвращает {...User, message: "", result=true/false} 
     
 * Изменение данных конкретного пользователя \
     `put --> api/user/:id` \
-    Возвращает {...User, message: "", result=true/false} \
+    Возвращает {...User, message: "", result=true/false} 
 
 * Удаление данных конкретного пользователя \
     `delete --> api/user/:id` \
-    Возвращает {...User, message: "", result=true/false} \
+    Возвращает {...User, message: "", result=true/false} 
 
 ---
 #### GameRoutes
@@ -74,36 +74,36 @@
 
 * Получение списка игр \
     `get --> api/game` \
-    Возвращает [{}, {}, ...] \
+    Возвращает [{}, {}, ...] 
 
 * Получение списка активных(Игр с одним игроком) игр \
     `get --> get/game/active` \
-    Возвращает [{}, {}, ...] \
+    Возвращает [{}, {}, ...] 
 
 * Получение данных об конкретной игре по id \
     `get --> api/game/:id` \
-    Возвращает {...game, message: "Success", result: true} \
+    Возвращает {...game, message: "Success", result: true} 
 
 * Удаление данных об конкретной игре по id \
     `delete --> api/game/:id` \
-    Возвращает {...game, message: "Game has been successfully deleted", result true} \
+    Возвращает {...game, message: "Game has been successfully deleted", result true} 
 
 * Создание игры(Необходимые данные: id, name, isPrivate, password, player1Id) \
     `post --> api/create` \
-    Возвращает {...game, message: "Game has been successfully created", result: true} \
+    Возвращает {...game, message: "Game has been successfully created", result: true} 
     
 * Подключение к созданной игре(Необходимые данные: player2Id, name, password(Может быть null)) \
     `put --> api/join` \
-    Возвращает {...game, message: "You have been successfully joined the game", result: true} \
+    Возвращает {...game, message: "You have been successfully joined the game", result: true} 
 
 * Получение списка ходов конкретной игры \
     `get --> api/moves/:id` \
-    Возвращает ['A5', 'G6', ...] \
+    Возвращает ['A5', 'G6', ...] 
 
 * Добавление хода в массив ходов(Необходимые данные: id, move) move = 'A5' \
     `post --> api/makemove` \
-    Возвращает {...game, message: "Move has been recorded", result: true} \
+    Возвращает {...game, message: "Move has been recorded", result: true} 
 
 * Меняет флаг победы(Необходимые данные: id, winFlag) \
     `put --> api/flagwinner` \
-    Возвращает {...game, message: "Winner has been flagged", result: true} \
+    Возвращает {...game, message: "Winner has been flagged", result: true} 

@@ -105,8 +105,14 @@
 >
 > * Добавление хода в массив ходов(Необходимые данные: id, move) move == 'b4s5' \
 >    `post --> api/makemove` \
->    Возвращает {...game, message: "Move has been recorded", result: true} 
->
+>    Возвращает {...game, message: "Move has been recorded", result: true}
+>   
+> * Добавление хода в массив ходов, с последующим ответным ходом бота(Необходимые данные: id, move) \
+>   Код бота был взят у [angelika005](https://github.com/Gaymmasters/ML) \
+>   `post --> api/botmove` \
+>   Возвращает {...game, message: "Bot has made his move", result: true}
+>   
 > * Меняет флаг победы(Необходимые данные: id, winFlag) \
 >    `put --> api/flagwinner` \
->    Возвращает {...game, message: "Winner has been flagged", result: true} 
+>    Возвращает {...game, message: "Winner has been flagged", result: true}
+

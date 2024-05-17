@@ -10,11 +10,13 @@
     `npm start`
 > Или в режиме разработки
     `npm run dev`
-=
+
+---
 ### Routes
 
 #### UserRoutes
 (Пример пользователя)
+    ```javascript
     User = {
         id: 12345,
         email: "test@gmail.com",
@@ -22,6 +24,7 @@
         password: "1111",
         skin: 0
     }
+    ```
     
 * Регистрирование пользователя(Необходимые данные: email, login, password)
     post --> api/registration
@@ -60,19 +63,23 @@
     delete --> api/user/:id
     Возвращает {...User, message: "", result=true/false}
     При возникновение какой-либо ошибки может не вернуть ...User
-=
+
+---
 #### GameRoutes
 (Пример игры)
+    ```javascript
     Game = {
         id: 12345,
         player1Id: 111111,
         player2Id: 222222,
         winflag: 0,
         password: 'abcd',
-        moves: ['A4', 'B5', ...],
+        moves: ['b4s6', 'b6s1', ...],
         name: "My game",
-        isPrivate: true
+        isPrivate: true,
+        isBot: false
     }
+    ```
 
 * Получение списка игр
     get --> api/game

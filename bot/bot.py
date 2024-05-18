@@ -87,8 +87,8 @@ def optimal_move(board, depth, prev):
     # то делаем ход в любую свободную клетку
     if best_move == None:
         best_move = random.randint(0,8)
-        if board[prev][best_move]!='O' and board[prev][best_move]!='X':
-            return best_move
+        while (board[prev][best_move]!='O' and board[prev][best_move]!='X'):
+            best_move = (best_move+1)%9
     return best_move
 
 matrix = json.loads(sys.argv[2])

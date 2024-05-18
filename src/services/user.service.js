@@ -91,7 +91,7 @@ class UserService {
            return {message: `User with e-mail: '${email}' doesn't exist.`, result: false};
         }
         const IsPasswordValid = await bcrypt.compare(password, userData.password); // Проверяем пароль
-        const user = new User(userData.id, userData.email, userData.login, userData.password);
+        const user = new User(userData.id, userData.email, userData.login, userData.password, userData.skin);
         if (!IsPasswordValid)
             return {...user, message: `Invalid password`, result: false};
 

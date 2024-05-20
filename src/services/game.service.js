@@ -125,7 +125,7 @@ function matrix(arr){
 }
 function runPythonScript(args) {
     return new Promise((resolve, reject) => {
-      const pythonProcess = spawn('python', ['../bot/bot.py', ...args]);
+      const pythonProcess = spawn('python3', ['bot/bot.py', ...args]);
   
       let output = '';
       pythonProcess.stdout.on('data', (data) => {

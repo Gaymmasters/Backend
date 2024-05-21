@@ -14,7 +14,7 @@ class GameController {
     }
     async getActiveGame(req, res){
         try{
-            const games = await pool.query(`SELECT * FROM "Game" WHERE "player2Id" IS NULL`);
+            const games = await pool.query(`SELECT * FROM "Game" WHERE "player2Id" IS NULL AND "isBot"=false`);
             console.log(games.rows);
             return res.json(games.rows)
         }catch(e){
@@ -47,8 +47,8 @@ class GameController {
     async createGame(req, res){
         try{
             const id = Date.now();
-            const {name, isPrivate, password, player1Id} = req.body;
-            const gameData = await gameService.createGame(id, name, isPrivate, password, player1Id);
+            const {name, isPrivate, password, player1Id, isBot} = req.body;
+            const gameData = await gameService.createGame(id, name, isPrivate, password, player1Id, isBot);
             console.log(gameData);
             return res.json(gameData);
         }catch(e){

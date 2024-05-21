@@ -23,15 +23,15 @@ class GameService {
 
         return {...game, message: "Game has been successfully deleted", result: true};
     }
-    async createGame(id, name, isPrivate, password, player1Id){
+    async createGame(id, name, isPrivate, password, player1Id, isBot){
         const checkName = (await pool.query(`SELECT name FROM "Game" WHERE "name"=$1`, [name])).rows[0];
-        const game = new Game({id: id, name: name, isPrivate: isPrivate, password: password, player1Id: player1Id, moves: [], winFlag: 0});
+        const game = new Game({id: id, name: name, isPrivate: isPrivate, password: password, player1Id: player1Id, moves: [], winFlag: 0, isBot: isBot});
         if (checkName){
             console.log(`Game with name: '${name}' already exists.`);
             return {...game, message: `Game with name: '${name}' already exists.`, result: false}
         }
-        await pool.query(`INSERT INTO "Game"(id, "player1Id", "winFlag", "password", "moves", "name", "isPrivate") values($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-            [id, player1Id, game.winFlag, password, game.moves, name, isPrivate]);
+        await pool.query(`INSERT INTO "Game"(id, "player1Id", "winFlag", "password", "moves", "name", "isPrivate", "isBot") values($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            [id, player1Id, game.winFlag, password, game.moves, name, isPrivate, isBot]);
         return {...game, message: "Game has been successfully created", result: true};
     }
     async joinGame(player2Id, name, password){

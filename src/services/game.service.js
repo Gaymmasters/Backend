@@ -89,14 +89,17 @@ class GameService {
             return {message: `Game with id: '${id}' doesn't exist.`, result: false};
         }
         const diff_to_recursion = [2, 4, 7];
+        let _diff = 2;
+        if (difficulty >=0 && difficulty <=2){
+            _diff = diff_to_recursion[difficulty];
+        }
+
         const game = new Game(checkGame);
         game.moves.push(move);
         const gameMatrix = matrix(game.moves);
 
-        const result = await runPythonScript([move[3], JSON.stringify(gameMatrix), diff_to_recursion[difficulty]]);
-        console.log('Your move is', move);
+        const result = await runPythonScript([move[3], JSON.stringify(gameMatrix), _diff]);
         const botMove = "b" + move[3] + "s" + result[0];
-        console.log('Bot move is', botMove)
         game.moves.push(botMove);
         await pool.query(`UPDATE "Game" SET "moves"=$1 WHERE "id"=$2`, [game.moves, id]);
         return {...game, message: "Bot has made his move", result: true};

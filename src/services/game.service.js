@@ -82,16 +82,18 @@ class GameService {
         await pool.query(`UPDATE "Game" SET "moves"=$1 WHERE "id"=$2`, [game.moves, id]);
         return {...game, message: "Move has been recorded", result: true};
     }
-    async botMove(id, move){
+    async botMove(id, move, difficulty){
         const checkGame = (await pool.query(`SELECT * FROM "Game" WHERE "id"=$1`, [id])).rows[0];
         if (!checkGame){
             console.log(`Game with id: '${id}' doesn't exist.`);
             return {message: `Game with id: '${id}' doesn't exist.`, result: false};
         }
+        const diff_to_recursion = [2, 4, 7];
         const game = new Game(checkGame);
         game.moves.push(move);
         const gameMatrix = matrix(game.moves);
-        const result = await runPythonScript([move[3], JSON.stringify(gameMatrix)]);
+
+        const result = await runPythonScript([move[3], JSON.stringify(gameMatrix), diff_to_recursion[difficulty]]);
         console.log('Your move is', move);
         const botMove = "b" + move[3] + "s" + result[0];
         console.log('Bot move is', botMove)

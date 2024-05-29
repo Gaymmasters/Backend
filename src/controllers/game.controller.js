@@ -102,8 +102,8 @@ class GameController {
     }
     async botMove(req, res){
         try{
-            const {id, move} = req.body;
-            const userData = await gameService.botMove(id, move);
+            const {id, move, difficulty} = req.body;
+            const userData = await gameService.botMove(id, move, difficulty);
            // console.log(userData);
             return res.json(userData);
         }catch(e){

@@ -93,4 +93,5 @@ def optimal_move(board, depth, prev):
 
 matrix = json.loads(sys.argv[2])
 lastMove = int(sys.argv[1])
-print(optimal_move(matrix, 2, lastMove))
+difficulty = int(sys.argv[3])
+print(optimal_move(matrix, difficulty, lastMove))

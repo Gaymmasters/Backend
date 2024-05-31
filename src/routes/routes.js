@@ -30,7 +30,7 @@ router.get('/game', gameController.getAllGames);
 router.get('/game/active', gameController.getActiveGame);
 router.get('/game/:id', gameController.getOneGame);
 router.post('/create',
-            body('player1Id).exists().not().isEmpty(),
+            body('player1Id').exists().not().isEmpty(),
             gameController.createGame);
 router.delete('/game/:id', gameController.deleteGame);
 router.put('/join', gameController.joinGame);

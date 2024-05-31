@@ -13,7 +13,6 @@ router.post('/registration',
     userController.registerUser);
 router.post('/login',
     body('email').isEmail(),
-    body('login').isLength({min: 5, max: 20}),
     userController.login);
 router.post('/logout', userController.logout);
 router.get('/refresh', userController.refresh);

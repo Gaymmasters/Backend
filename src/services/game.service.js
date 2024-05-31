@@ -88,7 +88,7 @@ class GameService {
             console.log(`Game with id: '${id}' doesn't exist.`);
             return {message: `Game with id: '${id}' doesn't exist.`, result: false};
         }
-        const diff_to_recursion = [2, 4, 7];
+        const diff_to_recursion = [2, 4, 6];
         let _diff = 2;
         if (difficulty >=0 && difficulty <=2){
             _diff = diff_to_recursion[difficulty];

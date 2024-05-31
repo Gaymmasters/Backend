@@ -9,15 +9,19 @@ const router = new Router();
 router.post('/registration', 
     body('email').isEmail(),
     body('password').isLength({min: 5, max: 20}),
+    body('login').isLength({min: 5, max: 20}),
     userController.registerUser);
 router.post('/login',
     body('email').isEmail(),
+    body('login').isLength({min: 5, max: 20}),
     userController.login);
 router.post('/logout', userController.logout);
 router.get('/refresh', userController.refresh);
 router.get('/user', userController.getAllUsers);
 router.get('/user/:id', userController.getOneUser);
-router.put('/user/login/:id', userController.updateLogin);
+router.put('/user/login/:id',
+           body('login').isLength({min: 5, max: 20}),
+           userController.updateLogin);
 router.put('/user/skin/:id', userController.updateSkin);
 router.delete('/user/:id', userController.deleteUser);
 
@@ -25,7 +29,9 @@ router.delete('/user/:id', userController.deleteUser);
 router.get('/game', gameController.getAllGames);
 router.get('/game/active', gameController.getActiveGame);
 router.get('/game/:id', gameController.getOneGame);
-router.post('/create', gameController.createGame);
+router.post('/create',
+            body('player1Id).exists().not().isEmpty(),
+            gameController.createGame);
 router.delete('/game/:id', gameController.deleteGame);
 router.put('/join', gameController.joinGame);
 router.get('/moves/:id', gameController.getMoves);
